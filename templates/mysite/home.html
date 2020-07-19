@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+  {% block css %}
+    body{
+      background-color : #FDF2E9  ;
+        font-family: 'Karla', sans-serif;
+      }
+
+      .jumbotron{
+        background-color : #DC7633;
+      }
+  {% endblock css %}
+{% block title %} Home {% endblock title %}
+{% block activeHome %} active {% endblock activeHome %}
+{% block body %}
+    <div class="container">
+        <div class="jumbotron my-3">
+          <h1 class="display-4">Welcome to NASSCOM</h1> <a class="btn btn-dark btn-lg my-2" href="https://web-chat.global.assistant.watson.cloud.ibm.com/preview.html?region=eu-gb&integrationID=5d731382-88cd-4c96-ab91-aa00c5e0d8a9&serviceInstanceID=5fc73929-f222-4b3f-911b-2350a327402b" role="button">Chat With Assistant</a>
+          <p class="lead">Donate, because they need</p>
+          <hr class="my-4">
+          <p>What do you want to donate ?</p>
+          <a class="btn btn-dark btn-lg" href="/donateFood" role="button">Donate Food</a>
+          <a class="btn btn-dark btn-lg" href="/donateCloth" role="button">Donate Cloths</a>
+          <a class="btn btn-dark btn-lg" href="https://www.pmcares.gov.in/en/" role="button">Donate Money at PM care Fund</a>
+          
+        </div>
+
+
+        <div class="row my-2">
+          <div class="bg-dark col-lg-6 col-md-12 text-center text-white overflow-hidden">
+            <div class="my-3 py-3">
+              <h2 class="display-5">Another headline</h2>
+              <p class="lead">And an even wittier subheading.</p>
+            </div>
+            <div><img src="https://source.unsplash.com/1600x900/?covid" class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;" alt="Image Not Available"></div>
+          </div>
+          <div class="bg-light col-lg-6 col-md-12 text-center overflow-hidden">
+            <div class="my-3 p-3">
+              <h2 class="display-5">Another headline</h2>
+              <p class="lead">And an even wittier subheading.</p>
+            </div>
+            <div><img src="https://source.unsplash.com/1600x900/?covid" class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;" alt="Image Not Available"></div>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="bg-light col-lg-6 col-md-12 text-center overflow-hidden">
+            <div class="my-3 p-3">
+              <h2 class="display-5">Another headline</h2>
+              <p class="lead">And an even wittier subheading.</p>
+            </div>
+            <div><img src="https://source.unsplash.com/1600x900/?covid" class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;" alt="Image Not Available"></div>
+          </div>
+          <div class="bg-dark col-lg-6 col-md-12 text-center text-white overflow-hidden">
+            <div class="my-3 py-3">
+              <h2 class="display-5">Another headline</h2>
+              <p class="lead">And an even wittier subheading.</p>
+            </div>
+            <div><img src="https://source.unsplash.com/1600x900/?covid" class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;" alt="Image Not Available"></div>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="bg-dark col-lg-6 col-md-12 text-center text-white overflow-hidden">
+            <div class="my-3 py-3">
+              <h2 class="display-5">Another headline</h2>
+              <p class="lead">And an even wittier subheading.</p>
+            </div>
+            <div><img src="https://source.unsplash.com/1600x900/?covid" class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;" alt="Image Not Available"></div>
+          </div>
+          <div class="bg-light col-lg-6 col-md-12 text-center overflow-hidden">
+            <div class="my-3 p-3">
+              <h2 class="display-5">Another headline</h2>
+              <p class="lead">And an even wittier subheading.</p>
+            </div>
+            <div><img src="https://source.unsplash.com/1600x900/?covid" class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;" alt="Image Not Available"></div>
+          </div>
+        </div>
+    </div>
+{% endblock body %}
