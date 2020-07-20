@@ -7,10 +7,12 @@ from .models import *
 import datetime
 from django.contrib.auth.models import Group
 from .decorators import *
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def home(request):
     return render(request, 'mysite/home.html')
-
+    
+@login_required(login_url='handleLogin')
 def contact(request):
     if(request.method=='POST'):
         name = request.POST['name']
@@ -94,6 +96,7 @@ def handleLogin(request):
             return redirect('home')
     return HttpResponse("Error 404 . Login through Webapp")
 
+@login_required(login_url='handleLogin')
 def profile(request):
     if request.method=="POST":
         data=Userinfo.objects.filter(username=request.user)
@@ -111,6 +114,7 @@ def profile(request):
     params={'data':data}
     return render(request, 'mysite/profile.html',params)
 
+@login_required(login_url='handleLogin')
 def deleteacc(request):
     if request.method=="POST":  
         try:
@@ -128,6 +132,7 @@ def deleteacc(request):
     
     return redirect('home')
 
+@login_required(login_url='handleLogin')
 def changepassword(request):
     if(request.method=='POST'):
         old=request.POST['old']
@@ -153,13 +158,14 @@ def changepassword(request):
         params={'data':data}
         return render(request, 'mysite/profile.html',params)
 
+@login_required(login_url='handleLogin')
 def viewprofile(request , slug):
     user1 = Userinfo.objects.filter(username=slug)
     params={'users':user1}
     return render(request, 'mysite/viewProfile.html',params)
 
 
-
+@login_required(login_url='handleLogin')
 def donateFood(request):
     if(request.method=='POST'):
         foodStatus = request.POST['foodStatus']
@@ -179,6 +185,7 @@ def donateFood(request):
 
     return render(request,'mysite/donateFood.html')
 
+@login_required(login_url='handleLogin')
 def donateCloth(request):
     if(request.method=='POST'):
         clothType = request.POST['clothType']
@@ -197,6 +204,7 @@ def donateCloth(request):
             messages.error(request,"You are not logged in. Or you are not a member. Please Login for Donate")
     return render(request,'mysite/donateCloth.html')
 
+@login_required(login_url='handleLogin')
 def createtweet(request):
     if(request.method=="POST"):
         uname=request.POST['uname']
@@ -211,6 +219,7 @@ def createtweet(request):
             messages.error(request,"Sorry This username is Invalid. Try Again")    
     return redirect('home')
 
+@login_required(login_url='handleLogin')
 def tweet(request):
     feeds=NewsFeed.objects.all().order_by('-id')
     params={'feeds':feeds}
@@ -221,6 +230,7 @@ def handleLogout(request):
     messages.success(request, "Successfully Logged Out. Visit after website again!. If you have any issue then post it on contact tab. Thankyou!")
     return redirect('home')
 
+@login_required(login_url='handleLogin')
 def dashboard(request):
     user=request.user
     user1=Userinfo.objects.filter(username=user)
@@ -231,6 +241,7 @@ def dashboard(request):
     params={'clothes':clothes, 'foods':foods}
     return render(request,'mysite/dashboard.html',params)
 
+@login_required(login_url='handleLogin')
 def acceptFood(request, slug):
     user=request.user
     user1=Userinfo.objects.filter(username=user)
@@ -243,6 +254,7 @@ def acceptFood(request, slug):
     messages.success(request, "You Confirmed Food Order")
     return render(request,'mysite/dashboard.html',params)
 
+@login_required(login_url='handleLogin')
 def acceptCloth(request, slug):
     user=request.user
     user1=Userinfo.objects.filter(username=user)
