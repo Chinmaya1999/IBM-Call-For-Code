@@ -4,8 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login , logout
 from .models import *
+import datetime
+from django.contrib.auth.models import Group
+from .decorators import *
 # Create your views here.
-
 def home(request):
     return render(request, 'mysite/home.html')
 
@@ -51,6 +53,9 @@ def handleSignup(request):
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
 
+        group=Group.objects.get(name='user')
+
+
         if(len(username)>10):
             messages.error(request, "Username length must be less than 10 character.")
             return redirect('home')
@@ -67,6 +72,7 @@ def handleSignup(request):
         myuser.first_name = fname
         myuser.last_name = lname
         myuser.save()
+        myuser.groups.add(group)
         userinformation = Userinfo(username=username,firstname=fname,lastname=lname, email=email, password=pass1)
         userinformation.save()
         messages.success(request,"You have successfully registered in this Blog. Welcome!")
@@ -147,67 +153,104 @@ def changepassword(request):
         params={'data':data}
         return render(request, 'mysite/profile.html',params)
 
+def viewprofile(request , slug):
+    user1 = Userinfo.objects.filter(username=slug)
+    params={'users':user1}
+    return render(request, 'mysite/viewProfile.html',params)
+
+
 
 def donateFood(request):
     if(request.method=='POST'):
         foodStatus = request.POST['foodStatus']
         exampleFoodDescription= request.POST['exampleFoodDescription']
-        user=request.user
-        donate = DonatedFood(foodStatus=foodStatus, foodDescription=exampleFoodDescription,user=user)
-        donate.save()
-        distributionCentres=DistributionCentre.objects.all()
-        # don=DonatedFood.objects.get(donate.no)
-        print('Working',donate.no)
-        # messages.success(request,"Your response has been Submitted Successfully. Thank You!")
-        return render(request,'mysite/selectFoodDonationCentre.html',{'centres':distributionCentres,'no':donate})
+        try:
+            user=request.user
+            user1=Userinfo.objects.filter(username=user)
+            pin1=user1[0].pin
+            address=user1[0].address
+            phone=user1[0].phone
+            donate = DonatedFood(foodStatus=foodStatus, foodDescription=exampleFoodDescription,user=user,pin=pin1,phone=phone,address=address)
+            donate.save()
+            messages.success(request,"Your response has been Submitted Successfully. Thank You!")
+            return redirect('home')
+        except:
+            messages.error(request,"You are not logged in. Or you are not a member. Please Login for Donate")
 
     return render(request,'mysite/donateFood.html')
 
 def donateCloth(request):
     if(request.method=='POST'):
-        clothType = request.POST.get('clothType')
-        exampleClothDescription= request.POST.get('exampleClothDescription')
-        user=request.user
-        
-        donate = DonatedCloth(clothType=clothType, clothDescription=exampleClothDescription,user=user)
-        donate.save()
-        distributionCentres=DistributionCentre.objects.all()
-        # don=DonatedFood.objects.get(donate.no)
-        print('Working',donate.no)
-        # messages.success(request,"Your response has been Submitted Successfully. Thank You!")
-        return render(request,'mysite/selectClothDonationCentre.html',{'centres':distributionCentres,'no':donate})
+        clothType = request.POST['clothType']
+        exampleClothDescription= request.POST['exampleClothDescription']
+        try:
+            user=request.user
+            user1=Userinfo.objects.filter(username=user)
+            pin1=user1[0].pin
+            address=user1[0].address
+            phone=user1[0].phone
+            donate = DonatedCloth(clothType=clothType, clothDescription=exampleClothDescription,user=user,pin=pin1,phone=phone,address=address)
+            donate.save()
+            messages.success(request,"Your response has been Submitted Successfully. Thank You!")
+            return redirect('home')
+        except:
+            messages.error(request,"You are not logged in. Or you are not a member. Please Login for Donate")
     return render(request,'mysite/donateCloth.html')
+
+def createtweet(request):
+    if(request.method=="POST"):
+        uname=request.POST['uname']
+        feed=request.POST['feed']
+        data1=User.objects.filter(username=uname)
+        try:
+            if(uname==data1[0].username):
+                feed1=NewsFeed(user1=uname, feed=feed)
+                feed1.save()
+                messages.success(request,"Your response has been Submitted Successfully. Thank You!")
+        except:
+            messages.error(request,"Sorry This username is Invalid. Try Again")    
+    return redirect('home')
+
+def tweet(request):
+    feeds=NewsFeed.objects.all().order_by('-id')
+    params={'feeds':feeds}
+    return render(request,'mysite/newsFeed.html',params)
 
 def handleLogout(request):
     logout(request)
     messages.success(request, "Successfully Logged Out. Visit after website again!. If you have any issue then post it on contact tab. Thankyou!")
     return redirect('home')
 
-def chooseFoodCentre(request,pk,no):
-    centre=DistributionCentre.objects.get(id=pk)
-    
-    if DonatedFood.objects.get(no=no):
-        food=DonatedFood.objects.get(no=no)
-        status='Pending'
-        donation=foodDonation(distributionCentre=centre,donatedFood=food,status=status)
-        donation.save()
-        messages.success(request,"Your response has been Submitted Successfully. Thank You!")
-        return redirect('home')
+def dashboard(request):
+    user=request.user
+    user1=Userinfo.objects.filter(username=user)
+    pin1=user1[0].pin
+    print(pin1)
+    clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
+    foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
+    params={'clothes':clothes, 'foods':foods}
+    return render(request,'mysite/dashboard.html',params)
 
-def chooseClothCentre(request,pk,no):
-    centre=DistributionCentre.objects.get(id=pk)
-    cloth=DonatedCloth.objects.get(no=no)
-    status='Pending'
-    donation=clothDonation(distributionCentre=centre,donatedCloth=cloth,status=status)
-    donation.save()
-    messages.success(request,"Your response has been Submitted Successfully. Thank You!")
-    return redirect('home')
+def acceptFood(request, slug):
+    user=request.user
+    user1=Userinfo.objects.filter(username=user)
+    pin1=user1[0].pin
+    clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
+    foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
+    foods1=DonatedFood.objects.filter(no=slug)
+    foods1.delete()
+    params={'clothes':clothes, 'foods':foods}
+    messages.success(request, "You Confirmed Food Order")
+    return render(request,'mysite/dashboard.html',params)
 
-
-    # donatedFood=DonatedFood.objects.get(no=donate)
-    # print('working',centre,status,donatedFood)
-
-
-
-
-
+def acceptCloth(request, slug):
+    user=request.user
+    user1=Userinfo.objects.filter(username=user)
+    pin1=user1[0].pin
+    clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
+    foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
+    clothes1=DonatedCloth.objects.filter(no=slug)
+    clothes1.delete()
+    messages.success(request, "You Confirmed Clothes Order")
+    params={'clothes':clothes, 'foods':foods}
+    return render(request,'mysite/dashboard.html',params)

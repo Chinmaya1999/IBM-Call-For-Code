@@ -22,8 +22,11 @@
       <style type="text/css">
       
         {% block css %}
-
+            
         {% endblock css %}
+        .Blue{
+              background-color: aquamarine;
+            }
     </style>
     <title>
         {% block title %}
@@ -48,11 +51,15 @@
             <a class="nav-link" href="/profile">Profile</a>
           </li>
           {% endif %}
+          {% if request.user.is_superuser %}
+            <li class="nav-item {% block activeDashboard %} {% endblock activeDashboard %}">
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          {% endif %}
           <li class="nav-item {% block activeAbout %} {% endblock activeAbout %}">
             <a class="nav-link" href="/about">About</a>
           </li>
-            <li class="nav-item {% block activeBlog %} {% endblock activeBlog %}">
-            <a class="nav-link" href="/blog">Blog</a>
+            <li class="nav-item {% block activeFeed %} {% endblock activeFeed %}">
+            <a class="nav-link" href="/tweet">Feed</a>
           </li>
           <li class="nav-item {% block activeContact %} {% endblock activeContact %}">
             <a class="nav-link" href="/contact">Contact</a>
@@ -187,7 +194,17 @@
     {% block js %}
 
     {% endblock js %}
+    <!-- Footer -->
+<footer class="page-footer font-small Blue">
 
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://mdbootstrap.com/"> NASSCOM Hackathon : Recode</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
