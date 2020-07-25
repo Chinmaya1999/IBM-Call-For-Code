@@ -36,7 +36,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="/">NASSCOM</a>
+      <a class="navbar-brand" href="/">SAC</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -49,6 +49,8 @@
           {% if user.is_authenticated %}
             <li class="nav-item {% block activeProfile %} {% endblock activeProfile %}">
             <a class="nav-link" href="/profile">Profile</a>
+            <li class="nav-item {% block activeNotification %} {% endblock activeNotification %}">
+            <a class="nav-link" href="/notify">Notifications</a>
           </li>
           {% endif %}
           {% if request.user.is_superuser %}
@@ -68,10 +70,7 @@
 
         </ul>
         <div class="ml-auto form-inline ">
-        <form class="my-2 my-lg-0 mr-2" action="/search" method="get">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
-          <button class="btn btn-outline-success my-2 my-sm-2 {% block activeSearch %} {% endblock activeSearch %}" type="submit">Search</button>
-        </form>
+          <a class="btn btn-outline-success my-2 my-sm-2" href="https://web-chat.global.assistant.watson.cloud.ibm.com/preview.html?region=eu-gb&integrationID=2f56951f-120f-4309-92a2-dcdd4580ab57&serviceInstanceID=aee528ff-74f7-4657-b398-d01bb7a36378" role="button">Chat With SacBot</a>
 
             <!-- Button trigger modal -->
         {% if user.is_authenticated %}
@@ -194,6 +193,7 @@
     {% block js %}
 
     {% endblock js %}
+    <br><br>
     <!-- Footer -->
 <footer class="page-footer font-small Blue">
 

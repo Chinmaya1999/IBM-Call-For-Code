@@ -59,3 +59,26 @@ class NewsFeed(models.Model):
     timestamp = models.DateTimeField(default=now)
     def __str__(self):
         return self.user1
+
+class Notification(models.Model):
+    superuser=models.CharField(max_length=30,null=True)
+    enduser=models.CharField(max_length=30,null=True)
+    phone=models.CharField(max_length=30,null=True)
+    address=models.CharField(max_length=100,null=True)
+    timestamp = models.DateTimeField(default=now)
+    type1=models.CharField(max_length=100,null=True)
+    description=models.CharField(max_length=500,null=True)
+    done=models.IntegerField(null=True)
+    def __str__(self):
+        return self.enduser
+
+class DonatedOther(models.Model):
+    no=models.AutoField(primary_key=True)
+    pin=models.CharField(max_length=10,null=True)
+    user=models.ForeignKey(User,null=True,on_delete=models.SET_NULL)
+    phone=models.CharField(max_length=30,null=True)
+    address=models.CharField(max_length=50,null=True)
+    otherDescription=models.CharField(max_length=500,null=True)
+    timestamp = models.DateTimeField(default=now)
+    def __str__(self):
+        return self.otherDescription

@@ -5,14 +5,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login , logout
 from .models import *
 import datetime
-from django.contrib.auth.models import Group
-from .decorators import *
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 # Create your views here.
+
 def home(request):
     return render(request, 'mysite/home.html')
-    
-@login_required(login_url='handleLogin')
+
+
 def contact(request):
     if(request.method=='POST'):
         name = request.POST['name']
@@ -26,6 +26,7 @@ def contact(request):
             contact.save()
             messages.success(request,"Your response has been Submitted Successfully. Thank You!")
     return render(request, 'mysite/contact.html')
+
 
 def about(request):
     return render(request, 'mysite/about.html')
@@ -55,9 +56,6 @@ def handleSignup(request):
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
 
-        group=Group.objects.get(name='user')
-
-
         if(len(username)>10):
             messages.error(request, "Username length must be less than 10 character.")
             return redirect('home')
@@ -74,7 +72,6 @@ def handleSignup(request):
         myuser.first_name = fname
         myuser.last_name = lname
         myuser.save()
-        myuser.groups.add(group)
         userinformation = Userinfo(username=username,firstname=fname,lastname=lname, email=email, password=pass1)
         userinformation.save()
         messages.success(request,"You have successfully registered in this Blog. Welcome!")
@@ -94,7 +91,8 @@ def handleLogin(request):
         else:
             messages.error(request, "Invalid Credentials. Please try again")
             return redirect('home')
-    return HttpResponse("Error 404 . Login through Webapp")
+    messages.error(request, "You need to Login to access this page")
+    return redirect('home')
 
 @login_required(login_url='handleLogin')
 def profile(request):
@@ -109,7 +107,6 @@ def profile(request):
         data.update(firstname=fname1,lastname=lname1,phone=phone,address=address,pin=pin)
         data1.update(first_name=fname1, last_name=lname1)
         messages.success(request, "Successfully Profile Updated")
-
     data=Userinfo.objects.filter(username=request.user)
     params={'data':data}
     return render(request, 'mysite/profile.html',params)
@@ -233,36 +230,119 @@ def handleLogout(request):
 @login_required(login_url='handleLogin')
 def dashboard(request):
     user=request.user
-    user1=Userinfo.objects.filter(username=user)
-    pin1=user1[0].pin
-    print(pin1)
-    clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
-    foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
-    params={'clothes':clothes, 'foods':foods}
-    return render(request,'mysite/dashboard.html',params)
+    if(user.is_superuser):
+        user1=Userinfo.objects.filter(username=user)
+        pin1=user1[0].pin
+        others=DonatedOther.objects.filter(pin=pin1).order_by('-no')
+        clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
+        foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
+        params={'clothes':clothes, 'foods':foods,'others':others}
+        return render(request,'mysite/dashboard.html',params)
+    else:
+        messages.error(request, "You are not authorised to visit this page")
+        return redirect('home')
 
 @login_required(login_url='handleLogin')
 def acceptFood(request, slug):
     user=request.user
-    user1=Userinfo.objects.filter(username=user)
-    pin1=user1[0].pin
-    clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
-    foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
-    foods1=DonatedFood.objects.filter(no=slug)
-    foods1.delete()
-    params={'clothes':clothes, 'foods':foods}
-    messages.success(request, "You Confirmed Food Order")
-    return render(request,'mysite/dashboard.html',params)
+    if(user.is_superuser):
+        user1=Userinfo.objects.filter(username=user)
+        pin1=user1[0].pin
+        others=DonatedOther.objects.filter(pin=pin1).order_by('-no')
+        clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
+        foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
+        foods1=DonatedFood.objects.filter(no=slug)
+        enduser1=foods[0].user
+        phone1=user1[0].phone
+        address=user1[0].address
+        desc=foods1[0].foodDescription
+        type1='Food'
+        notify = Notification(superuser=user, enduser=enduser1, phone=phone1, address=address,type1=type1,description=desc, done=0)
+        notify.save()
+        foods1.delete()
+        params={'clothes':clothes, 'foods':foods,'others':others}
+        messages.success(request, "You Confirmed Food Order")
+        return render(request,'mysite/dashboard.html',params)
+    else:
+        messages.error(request, "You are not authorised to call this API")
+        return redirect('home')
+
 
 @login_required(login_url='handleLogin')
 def acceptCloth(request, slug):
     user=request.user
-    user1=Userinfo.objects.filter(username=user)
-    pin1=user1[0].pin
-    clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
-    foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
-    clothes1=DonatedCloth.objects.filter(no=slug)
-    clothes1.delete()
-    messages.success(request, "You Confirmed Clothes Order")
-    params={'clothes':clothes, 'foods':foods}
-    return render(request,'mysite/dashboard.html',params)
+    if(user.is_superuser):
+        user1=Userinfo.objects.filter(username=user)
+        pin1=user1[0].pin
+        others=DonatedOther.objects.filter(pin=pin1).order_by('-no')
+        clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
+        foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
+        clothes1=DonatedCloth.objects.filter(no=slug)
+        enduser1=clothes[0].user
+        phone1=user1[0].phone
+        address=user1[0].address
+        desc=clothes1[0].clothDescription
+        type1='Cloth'
+        notify = Notification(superuser=user, enduser=enduser1, phone=phone1, address=address, type1=type1,description=desc,done=0)
+        notify.save()
+        clothes1.delete()
+        messages.success(request, "You Confirmed Clothes Order")
+        params={'clothes':clothes, 'foods':foods,'others':others}
+        return render(request,'mysite/dashboard.html',params)
+    else:
+        messages.error(request, "You are not authorised to call this API")
+        return redirect('home')
+
+@login_required(login_url='handleLogin')
+def notify(request):
+    users=request.user
+    noti = Notification.objects.filter(enduser=users).order_by('-id')
+    params={'notis':noti}
+    return render(request,'mysite/notification.html',params)
+
+
+@login_required(login_url='handleLogin')
+def donateOther(request):
+    if(request.method=='POST'):
+        exampleOtherDescription= request.POST['exampleOtherDescription']
+        try:
+            user=request.user
+            user1=Userinfo.objects.filter(username=user)
+            pin1=user1[0].pin
+            address=user1[0].address
+            phone=user1[0].phone
+            donate = DonatedOther(otherDescription=exampleOtherDescription,user=user,pin=pin1,phone=phone,address=address)
+            donate.save()
+            messages.success(request,"Your response has been Submitted Successfully. Thank You!")
+            return redirect('home')
+        except:
+            messages.error(request,"You are not logged in. Or you are not be a member. Please Login to Donate")
+    return render(request,'mysite/donateOther.html')
+
+
+@login_required(login_url='handleLogin')
+def acceptOther(request, slug):
+    user=request.user
+    if(user.is_superuser):
+        user1=Userinfo.objects.filter(username=user)
+        pin1=user1[0].pin
+        clothes=DonatedCloth.objects.filter(pin=pin1).order_by('-no')
+        others=DonatedOther.objects.filter(pin=pin1).order_by('-no')
+        foods=DonatedFood.objects.filter(pin=pin1).order_by('-no')
+        others1=DonatedOther.objects.filter(no=slug)
+        enduser1=others[0].user
+        phone1=user1[0].phone
+        address=user1[0].address
+        desc=others1[0].otherDescription
+        type1='Other'
+        notify = Notification(superuser=user, enduser=enduser1, phone=phone1, address=address, type1=type1,description=desc,done=0)
+        notify.save()
+        others1.delete()
+        messages.success(request, "You Confirmed Others Order")
+        params={'clothes':clothes, 'foods':foods,'others':others}
+        return render(request,'mysite/dashboard.html',params)
+    else:
+        messages.error(request, "You are not authorised to call this API")
+        return redirect('home')
+
+

@@ -21,4 +21,7 @@ urlpatterns = [
     path('handleLogout',views.handleLogout,name='handleLogout'),
     path('donateFood',views.donateFood,name='donateFood'),
     path('donateCloth',views.donateCloth,name='donateCloth'),
+    path('notify',views.notify,name='donateCloth'),
+    path('donateOther',views.donateOther,name='donateOther'),
+    path('acceptOther/<int:slug>',views.acceptOther,name='acceptOther'),
 ]

@@ -68,5 +68,34 @@
             </div>
         </div>
         {% endfor %}
+        <br>
+        <hr>
+        <br>
+        <h4>Other Details</h4>
+        {% for other in others %}
+        <br>
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8 col-sm-12">
+                        <h4><pre>User         :: {{other.user}}</pre><h4>
+                        <h4><pre>Address      :: {{other.address}}</pre></h4>
+                        <h4><pre>Contact      :: {{other.phone}}</pre></h4>
+                        <h4><pre>Requested at :: {{other.timestamp}}</pre></h4>
+                    </div>
+                    <div class="col-md-4 col-sm-12 ">
+                        <a href="/acceptOther/{{other.no}}" class="btn btn-success mx-1 my-1">Accept</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><span style="color: tomato;">{{other.user}}</span> wants to donate <span style="color: chocolate;">some necessary items</span></h5>
+                <hr>
+                <h5 style="color: darkcyan;">Description - </h5>
+                <p class="card-text">{{other.otherDescription}}</p>    
+            </div>
+        </div>
+        {% endfor %}
+
     </div>
 {% endblock body %}
