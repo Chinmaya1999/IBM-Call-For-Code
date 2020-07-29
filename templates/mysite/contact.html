@@ -13,7 +13,8 @@
 
 {% block body %}
     <div class="container mt-5">
-    <h3>Contact NASSCOM Admin</h3>
+    <h3>Contact SAC Admin</h3>
+    <h6>Note : Please Provide your information in issue block in order to make this account as Donation Camp Admin Account</h6>
         <hr>
         <form action="/contact" method="POST">
             {% csrf_token %}
@@ -30,7 +31,7 @@
                 <input type="text" class="form-control" name="phone" id="exampleInputPassword1">
               </div>
               <div class="form-group">
-                  <label for="exampleInputPassword2">Describe your issue</label>
+                  <label for="exampleInputPassword2">How can we help?</label>
                   <textarea class="form-control" id="exampleInputPassword2" name="content" cols="20" rows="5"></textarea>
               </div>
                 <br>

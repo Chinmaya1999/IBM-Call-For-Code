@@ -22,7 +22,33 @@
       <style type="text/css">
       
         {% block css %}
-            
+            @import url('https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Baloo Da 2', cursive;
+}
+
+.bg-common{
+    background-color: rgba(180, 211, 233, 0.6);
+}
+
+
+.nav-link, .breadcrumb-item{
+    padding: 10px 0 10px 30px;
+    transition: all .2s;
+    color: #06092e;
+}
+
+.nav-link:hover, .breadcrumb-item a{
+    color: rgb(219, 63, 63);
+    text-decoration: none;
+}
+
+.card{
+    box-shadow: 0 0 8px 2px rgba(8, 4, 4, 0.6);
+}
         {% endblock css %}
         .Blue{
               background-color: aquamarine;
@@ -69,6 +95,10 @@
           
 
         </ul>
+        <div class="ml-auto form-inline mx-1">
+          <a class="btn btn-outline-success my-2 my-sm-2 mx-2" href="https://join.slack.com/t/sacate/shared_invite/zt-g05v625j-CYp~WYorMyCYT7O2b3z4pg" role="button"  target="_blank">Join us on Slack</a>
+
+
         <div class="ml-auto form-inline ">
           <a class="btn btn-outline-success my-2 my-sm-2" href="https://web-chat.global.assistant.watson.cloud.ibm.com/preview.html?region=eu-gb&integrationID=2f56951f-120f-4309-92a2-dcdd4580ab57&serviceInstanceID=aee528ff-74f7-4657-b398-d01bb7a36378" role="button">Chat With SacBot</a>
 
@@ -148,6 +178,14 @@
                   <div class="form-group">
                     <label for="exampleInputPassword2">Confirm your Password</label>
                     <input type="password" class="form-control" id="exampleInputPassword2" name="pass2" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="lna">Postal Code of your Area</label>
+                    <input type="text" class="form-control" id="lna" name="zip" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="lnam">Phone Number</label>
+                    <input type="text" class="form-control" id="lnam" name="phone" required>
                   </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Submit</button>

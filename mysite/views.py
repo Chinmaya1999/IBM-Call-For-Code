@@ -55,6 +55,12 @@ def handleSignup(request):
         email = request.POST['email']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
+        phone = request.POST['phone']
+        zip1 = request.POST['zip']
+        user1=Userinfo.objects.filter(username=username)
+        if(user1):
+            messages.error(request, "This username is not valid. Please try with other username.")
+            return redirect('home')
 
         if(len(username)>10):
             messages.error(request, "Username length must be less than 10 character.")
@@ -67,12 +73,11 @@ def handleSignup(request):
         if(pass1!=pass2):
             messages.error(request, "Password not matched. Please try again")
             return redirect('home')
-
         myuser = User.objects.create_user(username,email, pass1)
         myuser.first_name = fname
         myuser.last_name = lname
         myuser.save()
-        userinformation = Userinfo(username=username,firstname=fname,lastname=lname, email=email, password=pass1)
+        userinformation = Userinfo(username=username,firstname=fname,lastname=lname, email=email, password=pass1,phone=phone, pin=zip1)
         userinformation.save()
         messages.success(request,"You have successfully registered in this Blog. Welcome!")
         return redirect('home')
@@ -257,6 +262,11 @@ def acceptFood(request, slug):
         address=user1[0].address
         desc=foods1[0].foodDescription
         type1='Food'
+        aa=Userinfo.objects.filter(username=enduser1)
+        phone2=aa[0].phone
+        address2=aa[0].address
+        superuser1=Finaluser(superuser=user, enduser=enduser1, phone=phone2, address=address2,type1=type1,description=desc, done=0)
+        superuser1.save()
         notify = Notification(superuser=user, enduser=enduser1, phone=phone1, address=address,type1=type1,description=desc, done=0)
         notify.save()
         foods1.delete()
@@ -283,6 +293,11 @@ def acceptCloth(request, slug):
         address=user1[0].address
         desc=clothes1[0].clothDescription
         type1='Cloth'
+        aa=Userinfo.objects.filter(username=enduser1)
+        phone2=aa[0].phone
+        address2=aa[0].address
+        superuser1=Finaluser(superuser=user, enduser=enduser1, phone=phone2, address=address2,type1=type1,description=desc, done=0)
+        superuser1.save()
         notify = Notification(superuser=user, enduser=enduser1, phone=phone1, address=address, type1=type1,description=desc,done=0)
         notify.save()
         clothes1.delete()
@@ -335,6 +350,11 @@ def acceptOther(request, slug):
         address=user1[0].address
         desc=others1[0].otherDescription
         type1='Other'
+        aa=Userinfo.objects.filter(username=enduser1)
+        phone2=aa[0].phone
+        address2=aa[0].address
+        superuser1=Finaluser(superuser=user, enduser=enduser1, phone=phone2, address=address2,type1=type1,description=desc, done=0)
+        superuser1.save()
         notify = Notification(superuser=user, enduser=enduser1, phone=phone1, address=address, type1=type1,description=desc,done=0)
         notify.save()
         others1.delete()
@@ -345,4 +365,10 @@ def acceptOther(request, slug):
         messages.error(request, "You are not authorised to call this API")
         return redirect('home')
 
+@login_required(login_url='handleLogin')
+def acceptedOrder(request):
+    users=request.user
+    noti = Finaluser.objects.filter(superuser=users).order_by('-id')
+    params={'notis':noti}
+    return render(request,'mysite/acceptedOrder.html',params)
 
