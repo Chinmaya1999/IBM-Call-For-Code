@@ -76,7 +76,14 @@ We provided two options for normal User to clarify their doubts. Both of them is
    The Server is also hosted at [PythonAnywhere](https://www.pythonanywhere.com/). Click on the below links to use it directly from the hosted server.
    
    + [HOME PAGE](http://sac.pythonanywhere.com/)
+   
+## DEMONSTRATION
 
+   A brief Demonstration video of our website is available on YouTube.
+   
+   + [DEMONSTRATION VIDEO](https://www.youtube.com/watch?v=xKgpqD3nmIM&feature=youtu.be)
+   
+     
 
    ***Note : All Data being used is dummy data.***
                
