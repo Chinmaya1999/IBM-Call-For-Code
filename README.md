@@ -28,6 +28,21 @@ An easy-to-navigate website which can be used to donate food/clothes to the dist
 5. Your server should be up and running now.
 
 
+
+
+## SACBOT SERVICE AND SLACK
+We provided two options for normal User to clarify their doubts. Both of them is discussed below. We have used **IBM Service** for Chatbot Services
+
++ **SACBOT**
+        
+    This is a BOT which will answer your all your Doubts regarding our Motive and guide you to Donation method. Also this BOT can give you Information about COVID 19  
+  
+
++ **SLACK** 
+
+  If normal user have any question or complain, then they can contact us in Slack. We have also Integrated SACBOT in SLACK. Users can also interact to SACBOT in SLACK
+
+
 ## Tables
 
 + **User**
@@ -51,7 +66,7 @@ An easy-to-navigate website which can be used to donate food/clothes to the dist
 
   This table contains message that donation camp wants to show to everyonw. Also it will contain thanks message by donation camp. It will motivate more perople to donate
 
-+ **Notifiaction** 
++ **Notification** 
 
   This table contains details of users request.
 
@@ -59,10 +74,8 @@ An easy-to-navigate website which can be used to donate food/clothes to the dist
 ## ABOUT DEPLOYMENT
 
    The Server is also hosted at [PythonAnywhere](https://www.pythonanywhere.com/). Click on the below links to use it directly from the hosted server.
-
-   + [GetAllUser](http://abhinavanand499.pythonanywhere.com/getAllUsers/)
-   + [Get Activity Data of all users](http://abhinavanand499.pythonanywhere.com/getUserActDetails/)
-
+   
+   + [HOME PAGE](http://sac.pythonanywhere.com/)
 
 
    ***Note : All Data being used is dummy data.***
