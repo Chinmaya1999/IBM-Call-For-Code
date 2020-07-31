@@ -64,26 +64,33 @@ We provided two options for normal User to clarify their doubts. Both of them is
 
 + **NewsFeed** 
 
-  This table contains message that donation camp wants to show to everyonw. Also it will contain thanks message by donation camp. It will motivate more perople to donate
+  This table contains message that donation camp wants to show to everyone. Also it will contain thanks message by donation camp. It will motivate more people to donate
 
 + **Notification** 
 
-  This table contains details of users request.
+  This table contains details of orders that has been accepted and details of donation camp which have Accepted that order.
+ 
++ **FinalUser** 
 
+  This table contains details of orders that has been accepted and details of people who have donated things.
+  
+  
+## MORE ABOUT PROJECT
+
+If you have any question related to functioning of our projects then you can refer our videos. After watching this you will be able to know our project and motive of this project end to end.
+
++ [FULL VIDEO](https://www.youtube.com/watch?v=xKgpqD3nmIM)
+
++ [DEMO VIDEO](https://www.youtube.com/watch?v=A2BVjDvugpw)
+
+Click on above link to watch videos
 
 ## ABOUT DEPLOYMENT
 
    The Server is also hosted at [PythonAnywhere](https://www.pythonanywhere.com/). Click on the below links to use it directly from the hosted server.
    
    + [HOME PAGE](http://sac.pythonanywhere.com/)
-   
-## DEMONSTRATION
 
-   A brief Demonstration video of our website is available on YouTube.
-   
-   + [DEMONSTRATION VIDEO](https://www.youtube.com/watch?v=xKgpqD3nmIM&feature=youtu.be)
-   
-     
 
    ***Note : All Data being used is dummy data.***
                
