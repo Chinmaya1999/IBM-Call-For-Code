@@ -5,7 +5,7 @@ An easy-to-navigate website which can be used to donate food/clothes to the dist
 
 ## Steps
 
-1. Clone this repository to your local.
+1. Clone this repository to your local computer.
 
 2. Open the project in an editor of your preference.
 
